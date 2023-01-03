@@ -16,7 +16,7 @@ const main = async() => {
                 const lugar = await leerInput('Ciudad :');
                 const lugares = await busquedas.ciudad( lugar );
                 const idSel = await listarLugares(lugares);
-                if (id === '0' ) continue;
+                if (idSel === '0' ) continue;
 
                 const lugarSel = lugares.find(l => l.id === idSel);
                 busquedas.agregarHistorial( lugarSel.nombre);
@@ -37,8 +37,8 @@ const main = async() => {
                 
             break;
             case 2:
-                busquedas.historial.forEach(lugar, i =>{
-                    const ids = `${i + 1}`.green
+                busquedas.historial.forEach((lugar, i) =>{
+                    const idx = `${i + 1}`.green
                     console.log(`${idx} ${lugar}`);
                 } )
             break
