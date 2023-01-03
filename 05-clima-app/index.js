@@ -1,4 +1,6 @@
-const { leerInput, inquirerMenu, inquirerPausa } = require("./helpers/inquirer");
+require('dotenv').config();
+
+const { leerInput, inquirerMenu, inquirerPausa, listarLugares } = require("./helpers/inquirer");
 const Busquedas = require("./models/busquedas");
 
 const main = async() => {
@@ -12,27 +14,35 @@ const main = async() => {
             case 1:
                 //Mostrar mensaje
                 const lugar = await leerInput('Ciudad :');
-                await busquedas.ciudad( lugar );
+                const lugares = await busquedas.ciudad( lugar );
+                const idSel = await listarLugares(lugares);
+                if (id === '0' ) continue;
 
-                
-                //Buscar los lugares
-
-                //Seleccionar el lugar
-
+                const lugarSel = lugares.find(l => l.id === idSel);
+                busquedas.agregarHistorial( lugarSel.nombre);
                 //Clima
+                const clima = await busquedas.climaLugar(lugarSel.lat, lugarSel.lng)
+                console.log(clima)
 
                 //Mostrar resusltados
                 console.log('Informacion de la ciudad\n');
-                console.log('Ciudad:', );
-                console.log('Lat:', );
-                console.log('Lng:', );
-                console.log('Temperatura:', );
-                console.log('Minima:', );
-                console.log('Maximo:', );
+                console.log('Ciudad:', lugarSel.nombre);
+                console.log('Lat:', lugarSel.lat);
+                console.log('Lng:', lugarSel.lng);
+                console.log('Temperatura:', clima.temp);
+                console.log('Minima:', clima.min);
+                console.log('Maximo:', clima.max);
+                console.log('Como esta el clima', clima.desc)
 
                 
             break;
             case 2:
+                busquedas.historial.forEach(lugar, i =>{
+                    const ids = `${i + 1}`.green
+                    console.log(`${idx} ${lugar}`);
+                } )
+            break
+            case 3:
                 console.log({opt});
             break;
         }    
