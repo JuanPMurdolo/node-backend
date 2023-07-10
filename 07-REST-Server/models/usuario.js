@@ -20,7 +20,7 @@ const UsuarioSchema = Schema({
     rol: {
         type: String,
         required: true,
-        enum: ['ADMIN_ROLE', 'USER_ROLE'] // Solo puede ser uno de estos dos valores
+        //enum: ['ADMIN_ROLE', 'USER_ROLE'] // Solo puede ser uno de estos dos valores
     },
     estado: {
         type: Boolean,
@@ -31,5 +31,10 @@ const UsuarioSchema = Schema({
         default: false // Valor por defecto
     }
 });
+
+UsuarioSchema.methods.toJSON = function() {
+    const { __v, password, _id, ...usuario } = this.toObject(); // Extraemos la versión, la contraseña y el id del objeto usuario
+    return usuario;
+}
 
 module.exports = model('Usuario', UsuarioSchema); // Exportamos el modelo con el nombre 'Usuario' y el esquema UsuarioSchema
